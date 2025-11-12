@@ -1,0 +1,129 @@
+body {
+  font-family: 'Open Sans', sans-serif;
+  background-color: #3f5f6f;
+  margin: 0;
+  color: #ffffff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 2rem;
+  background-color: #588196;
+  color: #ffffff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.back-btn {
+  background: none;
+  border: none;
+  font-size: 1.8rem;
+  cursor: pointer;
+  color: #ffffff;
+  transition: 0.2s;
+}
+
+.back-btn:hover {
+  transform: scale(1.1);
+}
+
+h2 {
+  font-family: 'Playfair Display', serif;
+  color: #ffffff;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+main {
+  flex: 1;
+  max-width: 600px;
+  margin: 3rem auto;
+  background-color: #588196;
+  padding: 2rem;
+  border-radius: 15px;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.2);
+}
+
+label {
+  display: block;
+  margin-top: 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #ffffff;
+  font-size: 0.9rem;
+}
+
+input[type="text"],
+input[type="time"],
+input[type="number"] {
+  width: 100%;
+  padding: 0.7rem;
+  border: none;
+  border-radius: 5px;
+  margin-top: 0.4rem;
+  background-color: #eaeaea;
+  font-size: 0.95rem;
+}
+
+.alarms {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.add-btn {
+  margin-top: 1rem;
+  background-color: #4A6E87;
+  border: none;
+  padding: 0.7rem 1.2rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  color: #ffffff;
+  transition: 0.3s;
+}
+
+.add-btn:hover {
+  background-color: #3f5f6f;
+}
+
+.image-box {
+  margin-top: 1.5rem;
+  text-align: center;
+}
+
+.image-box img {
+  width: 160px;
+  border-radius: 8px;
+  margin-top: 0.6rem;
+}
+
+.file-label {
+  display: inline-block;
+  background-color: #4A6E87;
+  color: #ffffff;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  margin-top: 0.7rem;
+  transition: 0.3s;
+}
+
+.file-label:hover {
+  background-color: #3f5f6f;
+}
+
+footer {
+  background-color: #4A6E87;
+  color: #ffffff;
+  text-align: center;
+  font-size: 0.85rem;
+  padding: 1rem 0;
+  opacity: 0.9;
+}

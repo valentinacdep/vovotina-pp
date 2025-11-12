@@ -1,0 +1,141 @@
+body {
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  background-color: #1a001f;
+  color: #fff;
+  display: flex;
+  height: 100vh;
+}
+
+.view {
+  display: flex;
+  width: 100%;
+}
+
+.sidebar {
+  width: 250px;
+  background: #2a0140;
+  padding: 20px;
+  border-right: 2px solid #3b0058;
+  overflow-y: auto;
+}
+
+.sidebar h3 {
+  color: #dca8ff;
+  margin-bottom: 10px;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar li {
+  background: #3a005a;
+  padding: 10px;
+  margin-bottom: 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.sidebar li:hover {
+  background: #55007d;
+}
+
+.main-chat {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: #240033;
+}
+
+.chat-header {
+  background: #3b0058;
+  padding: 15px;
+  font-weight: bold;
+  color: #dca8ff;
+  border-bottom: 2px solid #4b0070;
+}
+
+#welcome-message {
+  margin: auto;
+  text-align: center;
+}
+
+#chat-window {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.hidden {
+  display: none;
+}
+
+#messages {
+  list-style: none;
+  padding: 20px;
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+#messages li.sent {
+  align-self: flex-end;
+  background: #b347ff;
+  color: #000;
+  border-radius: 15px 15px 0 15px;
+  padding: 10px 15px;
+  max-width: 60%;
+  word-wrap: break-word;
+}
+
+#messages li.received {
+  align-self: flex-start;
+  background: #3b0058;
+  border-radius: 15px 15px 15px 0;
+  padding: 10px 15px;
+  max-width: 60%;
+  word-wrap: break-word;
+}
+
+#message-form {
+  display: flex;
+  padding: 10px 20px;
+  border-top: 2px solid #3b0058;
+  background: #2a0140;
+}
+
+#message-input {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  background: #3a005a;
+  color: #fff;
+  font-size: 1rem;
+  outline: none;
+  margin-right: 10px;
+}
+
+#message-input::placeholder {
+  color: #bbb;
+}
+
+#message-form button {
+  padding: 12px 20px;
+  background: #b347ff;
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+#message-form button:hover {
+  background: #c46cff;
+}
