@@ -1,0 +1,101 @@
+/* cadastro.css — versão site desktop */
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #3f5f6f;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+/* Container central */
+.container {
+  text-align: center;
+  width: 100%;
+  padding: 20px;
+}
+
+/* Caixa de cadastro */
+.cadastro-box {
+  background-color: #588196;
+  padding: 45px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 480px;
+  margin: auto;
+}
+
+/* Formulário */
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+label {
+  text-align: left;
+  font-size: 14px;
+  color: #ffffff;
+  margin-top: 12px;
+}
+
+input {
+  width: 100%;
+  padding: 12px;
+  margin-top: 6px;
+  border: 1px solid #4A6E87;
+  border-radius: 6px;
+  font-size: 15px;
+}
+
+/* Botão */
+.btn {
+  width: 60%;
+  padding: 12px;
+  border: none;
+  background-color: #4A6E87;
+  color: white;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 20px;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.btn:hover {
+  background-color: #6b8fa5;
+  transform: scale(1.03);
+}
+
+/* Logo */
+#config_logo {
+  width: 140px;
+  max-width: 25vw;
+  margin-bottom: 20px;
+}
+
+/* Alinhamento do botão */
+#config_botao {
+  display: flex;
+  justify-content: center;
+  margin-top: 25px;
+}
+
+/* Responsividade */
+@media (max-width: 480px) {
+  .cadastro-box {
+    padding: 30px 20px;
+    max-width: 90%;
+  }
+
+  .btn {
+    width: 80%;
+  }
+
+  #config_logo {
+    width: 100px;
+  }
+}

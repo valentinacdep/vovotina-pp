@@ -3,8 +3,8 @@ const cors = require("cors");
 const path = require("path");
 const http = require("http");
 const { Server } = require("socket.io");
-const connection = require("./db_config"); // conexão MySQL
-const multer = require("multer"); // 🔹 ADICIONADO para upload
+const connection = require("./db_config");
+const multer = require("multer");
 
 const app = express();
 const server = http.createServer(app);
@@ -15,9 +15,19 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 
-// ===== ROTAS DE API =====
+// ===== CONFIGURAÇÃO DO MULTER =====
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, path.join(__dirname, "public", "uploads"));
+  },
+  filename: (req, file, cb) => {
+    const uniqueName = Date.now() + "-" + file.originalname;
+    cb(null, uniqueName);
+  },
+});
+const upload = multer({ storage });
 
-// Cadastro
+// ===== ROTAS DE CADASTRO E LOGIN =====
 app.post("/cadastro", (req, res) => {
   const { name, email, senha } = req.body;
   const query = "INSERT INTO users (name, email, senha) VALUES (?, ?, ?)";
@@ -29,7 +39,6 @@ app.post("/cadastro", (req, res) => {
   });
 });
 
-// Login
 app.post("/login", (req, res) => {
   const { email, senha } = req.body;
   const query = "SELECT * FROM users WHERE email = ? AND senha = ?";
@@ -45,29 +54,41 @@ app.post("/login", (req, res) => {
   });
 });
 
-// ===== UPLOAD DE ARQUIVOS =====
-
-// Configuração do armazenamento
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, "public", "uploads"));
-  },
-  filename: (req, file, cb) => {
-    const uniqueName = Date.now() + "-" + file.originalname;
-    cb(null, uniqueName);
-  },
-});
-const upload = multer({ storage });
-
-// Rota de upload
+// ===== UPLOAD DE CONTEÚDOS DIDÁTICOS =====
 app.post("/upload", upload.single("file"), (req, res) => {
   if (!req.file) {
     return res.status(400).json({ success: false, message: "Nenhum arquivo enviado." });
   }
 
-  const fileUrl = `/uploads/${req.file.filename}`;
-  res.json({ success: true, url: fileUrl });
+  const nome_arquivo = req.file.originalname;
+  const caminho = `/uploads/${req.file.filename}`;
+
+  const query = "INSERT INTO conteudos (nome_arquivo, caminho) VALUES (?, ?)";
+  connection.query(query, [nome_arquivo, caminho], (err, result) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ success: false, message: "Erro ao salvar no banco." });
+    }
+    res.json({
+      success: true,
+      message: "Arquivo enviado com sucesso!",
+      id: result.insertId,
+      caminho,
+    });
+  });
 });
+
+// ===== LISTAR CONTEÚDOS =====
+app.get("/conteudos", (req, res) => {
+  connection.query("SELECT * FROM conteudos ORDER BY criado_em DESC", (err, results) => {
+    if (err) return res.status(500).json([]);
+    res.json(results);
+  });
+});
+
+// ===== SERVIR ARQUIVOS UPLOADS E PDFS =====
+app.use("/uploads", express.static(path.join(__dirname, "public", "uploads")));
+app.use("/pdfs", express.static(path.join(__dirname, "public", "pdfs")));
 
 // ===== PÁGINA INICIAL =====
 app.get("/", (req, res) => {
@@ -75,10 +96,7 @@ app.get("/", (req, res) => {
 });
 
 // ===== SOCKET.IO (CHAT PRIVADO) =====
-
-// lista de usuários online: userId → { socketId, nome }
 const onlineUsers = new Map();
-// histórico: "menorId:maiorId" → [mensagens]
 const messages = {};
 
 function chatKey(a, b) {
@@ -86,9 +104,8 @@ function chatKey(a, b) {
 }
 
 io.on("connection", (socket) => {
-  console.log("🟢 Usuário conectado:", socket.id);
+  console.log("Usuário conectado:", socket.id);
 
-  // autenticação inicial (o cliente manda { id, nome })
   socket.on("authenticate", ({ id, name }) => {
     if (!id) return;
     onlineUsers.set(String(id), { socketId: socket.id, name });
@@ -96,7 +113,6 @@ io.on("connection", (socket) => {
     atualizarUsuariosOnline();
   });
 
-  // carregar histórico
   socket.on("load-history", (otherId) => {
     const userEntry = [...onlineUsers.entries()].find(([, v]) => v.socketId === socket.id);
     const userId = userEntry ? userEntry[0] : null;
@@ -105,7 +121,6 @@ io.on("connection", (socket) => {
     socket.emit("history", messages[key] || []);
   });
 
-  // envio de mensagens privadas
   socket.on("private-message", ({ recipient, message, senderId, senderName }) => {
     if (!recipient || !message) return;
     const key = chatKey(senderId, recipient);
@@ -113,35 +128,58 @@ io.on("connection", (socket) => {
     const data = { senderId, senderName, message, ts: Date.now() };
     messages[key].push(data);
 
-    // enviar pro destinatário se estiver online
     const rec = onlineUsers.get(String(recipient));
     if (rec && rec.socketId) {
       io.to(rec.socketId).emit("private-message", { sender: senderId, senderName, message });
     }
 
-    // e também pro próprio remetente
     socket.emit("private-message", { sender: senderId, senderName, message });
   });
 
-  // desconexão
   socket.on("disconnect", () => {
     const entry = [...onlineUsers.entries()].find(([, v]) => v.socketId === socket.id);
     if (entry) {
       onlineUsers.delete(entry[0]);
-      console.log(`🔴 Usuário ${entry[1].name} saiu.`);
+      console.log(`Usuário ${entry[1].name} saiu.`);
       atualizarUsuariosOnline();
     }
   });
 });
 
-// envia lista de online para todos
 function atualizarUsuariosOnline() {
   const list = [...onlineUsers.entries()].map(([id, v]) => ({ id, name: v.name }));
   io.emit("update-user-list", list);
 }
 
+
+
+
+// ===== BUSCAR DADOS DE UM USUÁRIO =====
+app.get("/usuario/:id", (req, res) => {
+  const { id } = req.params;
+  const query = "SELECT id, name, email FROM users WHERE id = ?";
+  connection.query(query, [id], (err, results) => {
+    if (err) return res.status(500).json({ success: false, message: "Erro ao buscar usuário." });
+    if (results.length === 0) return res.status(404).json({ success: false, message: "Usuário não encontrado." });
+    res.json({ success: true, user: results[0] });
+  });
+});
+
+
+// ===== ATUALIZAR DADOS DE UM USUÁRIO =====
+app.put("/usuario/:id", (req, res) => {
+  const { id } = req.params;
+  const { name, email } = req.body;
+  const query = "UPDATE users SET name = ?, email = ? WHERE id = ?";
+  connection.query(query, [name, email, id], (err) => {
+    if (err) return res.status(500).json({ success: false, message: "Erro ao atualizar usuário." });
+    res.json({ success: true, message: "Informações atualizadas com sucesso!" });
+  });
+});
+
+
 // ===== INICIAR SERVIDOR =====
 const PORT = 3000;
 server.listen(PORT, () => {
-  console.log();
+  console.log(`Servidor rodando em ${PORT}`);
 });

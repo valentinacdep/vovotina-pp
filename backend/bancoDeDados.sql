@@ -17,3 +17,10 @@ CREATE TABLE medicamentos (
   imagem_url VARCHAR(255),     -- link da imagem (caso tu envie pro servidor)
   criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE TABLE conteudos (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nome_arquivo VARCHAR(255) NOT NULL,
+  caminho VARCHAR(255) NOT NULL,
+  criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

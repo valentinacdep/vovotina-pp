@@ -1,0 +1,132 @@
+/* login.css — versão site desktop */
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #3f5f6f;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+}
+
+/* Container geral */
+.container {
+  text-align: center;
+  width: 100%;
+  padding: 20px;
+}
+
+/* Caixa de login */
+.login-box {
+  background-color: #588196;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 420px;
+  margin: auto;
+}
+
+/* Logo e subtítulo */
+.logo {
+  font-size: 32px;
+  font-weight: bold;
+  color: #d9e3ea;
+  margin-bottom: 6px;
+}
+
+.subtitle {
+  font-size: 15px;
+  margin-bottom: 25px;
+  color: #ffffff;
+}
+
+/* Formulário */
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+label {
+  text-align: left;
+  font-size: 14px;
+  color: #ffffff;
+  margin-top: 12px;
+}
+
+input {
+  width: 100%;
+  padding: 12px;
+  margin-top: 6px;
+  border: 1px solid #4A6E87;
+  border-radius: 6px;
+  font-size: 15px;
+}
+
+/* Link de senha */
+.forgot-password {
+  display: block;
+  text-align: right;
+  font-size: 13px;
+  color: #cfd7dd;
+  margin: 10px 0;
+}
+
+/* Botão */
+.btn {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  background-color: #4A6E87;
+  color: white;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 15px;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.btn:hover {
+  background-color: #6b8fa5;
+  transform: scale(1.02);
+}
+
+/* Registro */
+.register {
+  margin-top: 25px;
+  font-size: 14px;
+  color: #ffffff;
+}
+
+.register a {
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: bold;
+  border-bottom: 1px solid transparent;
+  transition: border-bottom 0.2s;
+}
+
+.register a:hover {
+  border-bottom: 1px solid #ffffff;
+}
+
+/* Logo imagem opcional */
+#config_logo {
+  width: 120px;
+  max-width: 25vw;
+  margin-bottom: 15px;
+}
+
+/* Responsividade */
+@media (max-width: 480px) {
+  .login-box {
+    padding: 30px 20px;
+    max-width: 90%;
+  }
+
+  .logo {
+    font-size: 26px;
+  }
+}

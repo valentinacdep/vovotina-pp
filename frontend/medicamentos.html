@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Vovotina - Medicamentos</title>
+    <link rel="stylesheet" href="medicamentos.css">
+</head>
+<body>
+
+    <!-- Cabeçalho -->
+    <div class="header">
+        <img src="./assets/logo.png" alt="Logo Vovotina">
+    </div>
+
+    <!-- Botão de voltar -->
+    <a href="paginaPrincipal.html" class="back-arrow">←</a>
+
+    <!-- Conteúdo principal -->
+    <div class="container">
+        <h2>MEDICAMENTOS</h2>
+
+        <form id="medForm">
+            <label for="nome">NOME DO REMÉDIO:</label>
+            <input type="text" id="nome" name="nome" placeholder="Ex: Enalapril" required>
+
+            <label for="horario">HORÁRIO:</label>
+            <input type="time" id="horario" name="horario" required>
+
+            <label for="quantidade">QUANTIDADE:</label>
+            <input type="text" id="quantidade" name="quantidade" placeholder="Ex: 1 comprimido" required>
+
+            <label for="imagem">IMAGEM DO REMÉDIO:</label>
+            <input type="file" id="imagem" accept="image/*">
+            <div class="preview" id="preview"></div>
+
+            <button type="submit">Cadastrar Alarme</button>
+        </form>
+    </div>
+
+    <!-- Script separado -->
+    <script src="medicamentos.js"></script>
+
+</body>
+</html>
