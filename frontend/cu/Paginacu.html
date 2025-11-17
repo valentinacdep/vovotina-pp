@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Vovotina - Conteúdos Didáticos</title>
+    <link rel="stylesheet" href="paginacu.css">
+</head>
+
+<body>
+
+    <!-- Cabeçalho -->
+    <div class="header">
+        <img src="./assets/logo.png" alt="Logo Vovotina">
+    </div>
+
+    <!-- Menu Superior -->
+    <div class="nav">
+        <a href="paginaPrincipal.html">INÍCIO</a>
+        <a href="chat.html">CHAT</a>
+    </div>
+
+    <!-- Bloco de Medicamentos -->
+    <section class="medicamentos">
+        <h2>MEDICAMENTOS:</h2>
+        <p>próximo alarme...</p>
+        <h3>Enalaprilu</h3>
+        <p>12:00 - 18:00</p>
+        <a href="medicamentos.html" class="btn">Cadastrar novo</a>
+    </section>
+
+    <!-- Conteúdos Didáticos -->
+    <section class="conteudos">
+        <h2>CONTEÚDOS DIDÁTICOS</h2>
+
+        <div class="upload-container">
+            <h3>📄 Enviar novo conteúdo</h3>
+            <form id="uploadForm">
+                <input type="file" id="fileInput" name="file" accept=".pdf" required>
+                <button type="submit">Enviar PDF</button>
+            </form>
+        </div>
+
+        <div id="conteudos-lista" class="cards"></div>
+    </section>
+
+    <section class="mapa">
+        <h2>MAPA</h2>
+        <div id="googleMap"></div>
+    </section>
+
+
+    <!-- Rodapé -->
+    <div class="footer">
+        <div class="icons">
+            <p>vovotina@gmail.com<br>(51) 9999-9999</p>
+            <img src="./assets/instagram.png" alt="Instagram" class="icon">
+            <img src="./assets/whatsapp.png" alt="WhatsApp" class="icon">
+            <img src="./assets/telefone.png" alt="Telefone" class="icon">
+        </div>
+        <div class="footer-content">
+            <img src="./assets/imagem idosos.png" alt="Imagem de idosos" class="idosos-img">
+        </div>
+    </div>
+
+    <script src="PaginaInicial.js"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=TUA_API_KEY&callback=initMap"></script>
+
+
+
+</body>
+
+</html>

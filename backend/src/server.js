@@ -7,8 +7,6 @@ const connection = require("./db_config");
 const multer = require("multer");
 
 const app = express();
-const server = http.createServer(app);
-const io = new Server(server, { cors: { origin: "*" } });
 
 // ===== MIDDLEWARES =====
 app.use(cors());
@@ -95,6 +93,31 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
+app.post("/medicamentos", (req, res) => {
+  const { nome,
+    horario,
+    quantidade,
+    usuario_id } = req.body;
+
+  connection.query("INSERT INTO medicamentos (nome, horarios, quantidade, usuario_id) VALUES (?, ?, ?, ?)", [nome, horario, quantidade, usuario_id], (err, result) => {
+    console.log(err)
+    if (err) {
+      res.status(500).json({error: "Erro"});
+    }
+    res.json({ message: "Sucesso" });
+  })
+})
+
+app.get("/medicamentos", (req, res) => {
+  connection.query("SELECT * FROM medicamentos", (err, result) => {
+    console.log(err)
+    if (err) {
+      res.status(500).json({error: "Erro"});
+    }
+    res.json({ message: "Sucesso", result });
+  })
+})
+
 // ===== SOCKET.IO (CHAT PRIVADO) =====
 const onlineUsers = new Map();
 const messages = {};
@@ -102,6 +125,9 @@ const messages = {};
 function chatKey(a, b) {
   return [String(a), String(b)].sort().join(":");
 }
+
+const server = http.createServer(app);
+const io = new Server(server, { cors: { origin: "*" } });
 
 io.on("connection", (socket) => {
   console.log("Usuário conectado:", socket.id);
@@ -155,28 +181,89 @@ function atualizarUsuariosOnline() {
 
 
 // ===== BUSCAR DADOS DE UM USUÁRIO =====
+// Em server.js, dentro da rota GET
 app.get("/usuario/:id", (req, res) => {
   const { id } = req.params;
+  // DEBUG DO SERVIDOR
+  console.log(`[Servidor] Recebida requisição GET para /usuario/${id}`);
   const query = "SELECT id, name, email FROM users WHERE id = ?";
   connection.query(query, [id], (err, results) => {
     if (err) return res.status(500).json({ success: false, message: "Erro ao buscar usuário." });
-    if (results.length === 0) return res.status(404).json({ success: false, message: "Usuário não encontrado." });
+    if (results.length === 0) {
+      // DEBUG DO SERVIDOR
+      console.log(`[Servidor] NENHUM usuário encontrado com ID: ${id}`);
+      return res.status(404).json({ success: false, message: "Usuário não encontrado." });
+    }
+    console.log(`[Servidor] Usuário encontrado: ${results[0].name}`);
     res.json({ success: true, user: results[0] });
   });
 });
 
 
-// ===== ATUALIZAR DADOS DE UM USUÁRIO =====
-app.put("/usuario/:id", (req, res) => {
-  const { id } = req.params;
-  const { name, email } = req.body;
-  const query = "UPDATE users SET name = ?, email = ? WHERE id = ?";
-  connection.query(query, [name, email, id], (err) => {
-    if (err) return res.status(500).json({ success: false, message: "Erro ao atualizar usuário." });
-    res.json({ success: true, message: "Informações atualizadas com sucesso!" });
-  });
-});
+// ===== EXCLUIR UM USUÁRIO (DELETE) =====
 
+app.delete("/usuario/:id", (req, res) => {
+
+  // 1. Pega o ID que veio na URL (ex: /usuario/42)
+
+  const { id } = req.params;
+ 
+  // 2. Cria a query SQL
+
+  // (Certifique-se que sua tabela 'users' permite DELETE)
+
+  const query = "DELETE FROM users WHERE id = ?";
+
+  // 3. Executa a query no banco
+
+  connection.query(query, [id], (err, result) => {
+
+    // Se der erro no banco
+
+    if (err) {
+
+      console.error("Erro no banco de dados:", err);
+
+      return res.status(500).json({ 
+
+        success: false, 
+
+        message: "Erro ao tentar excluir o usuário." 
+
+      });
+
+    }
+
+    // 4. Verifica se algo foi realmente deletado
+
+    // Se affectedRows for 0, significa que o ID não existia
+
+    if (result.affectedRows === 0) {
+
+      return res.status(404).json({ 
+
+        success: false, 
+
+        message: "Usuário não encontrado. Nenhum usuário foi excluído." 
+
+      });
+
+    }
+ 
+    // 5. Sucesso!
+
+    res.json({ 
+
+      success: true, 
+
+      message: "Usuário excluído com sucesso." 
+
+    });
+
+  });
+
+});
+ 
 
 // ===== INICIAR SERVIDOR =====
 const PORT = 3000;

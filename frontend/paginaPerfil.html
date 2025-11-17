@@ -5,6 +5,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Pagina do Perfil</title>
   <link rel="stylesheet" href="paginaPerfil.css">
+  
+  <style>
+    #btnExcluir {
+      background-color: #dc3545; /* Cor vermelha */
+      color: white;
+      margin-top: 10px; /* Espaçamento */
+    }
+  </style>
 </head>
 <body>
   <div class="container">
@@ -15,17 +23,13 @@
     </header>
     <div class="nav">
       <a href="paginaPrincipal.html">INÍCIO</a>
-
     </div>
 
     <div class="perfil">
       <div class="perfil-pic">
         <img id="fotoPerfil" src="./assets/fotoPerfil.png" alt="Foto de perfil">
       </div>
-
-
-    
-  
+      
       <p style="cursor: pointer; color: blue;" onclick="document.getElementById('inputFoto').click()">Editar foto</p>
       <input type="file" id="inputFoto" accept="image/*" style="display: none;" onchange="trocarFoto(event)">
 
@@ -36,8 +40,8 @@
         <input type="email" id="email" disabled>
       </div>
 
-      <button id="btnEditar" onclick="editarConta()">Editar informações da conta</button>
-    </div>
+      <button id="btnEditar">Editar informações da conta</button>
+      <button id="btnExcluir">Excluir Conta</button>
 
     <footer>
       <p>vovotina@gmail.com<br>(51) 9999-9999</p>

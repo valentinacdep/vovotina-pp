@@ -12,6 +12,7 @@ form.addEventListener('submit', async (e) => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, senha })
     });
+    console.log(response);
 
     const result = await response.json();
 
@@ -28,4 +29,10 @@ form.addEventListener('submit', async (e) => {
     console.error("Erro ao fazer login:", error);
     alert("Erro ao conectar com o servidor.");
   }
+
+  if (data.success) {
+    localStorage.setItem("userId", data.user.id); // <- ESSA LINHA É ESSENCIAL
+    localStorage.setItem("userName", data.user.name);
+    window.location.href = "paginaPrincipal.html";
+}
 });

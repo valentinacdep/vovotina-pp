@@ -10,7 +10,7 @@ function initMap() {
     });
 }
 
-document.getElementById("uploadForm").addEventListener("submit", async (e) => {
+document.getElementById("uploadForm")?.addEventListener("submit", async (e) => {
     e.preventDefault();
   
     const arquivo = document.getElementById("arquivo").files[0];
@@ -30,5 +30,36 @@ document.getElementById("uploadForm").addEventListener("submit", async (e) => {
     } catch (err) {
       document.getElementById("mensagem").innerText = "Erro ao enviar o arquivo!";
     }
+  });
+  
+// paginaPrincipal.js
+
+// paginaPrincipal.js
+// paginaPrincipal.js
+
+document.addEventListener("DOMContentLoaded", async () => {
+    const listaMedicamentos = document.getElementById("listaMedicamentos");
+    const res = await fetch("http://localhost:3000/medicamentos");
+    const result = await res.json();
+    const medicamentos = result.result
+  
+    if (medicamentos.length === 0) {
+      listaMedicamentos.innerHTML = "<p>Nenhum medicamento cadastrado ainda.</p>";
+      return;
+    }
+  
+    listaMedicamentos.innerHTML = ""; // limpa antes de renderizar
+  
+    medicamentos.forEach((med) => {
+      const medDiv = document.createElement("div");
+      medDiv.classList.add("med-item");
+      medDiv.innerHTML = `
+        <h3>${med.nome}</h3>
+        <p><strong>Quantidade:</strong> ${med.quantidade}</p>
+        <p><strong>Horário:</strong> ${med.horarios}</p>
+        <hr>
+      `;
+      listaMedicamentos.appendChild(medDiv);
+    });
   });
   

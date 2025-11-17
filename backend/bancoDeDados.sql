@@ -10,11 +10,10 @@ CREATE TABLE users (
 
 CREATE TABLE medicamentos (
   id INT AUTO_INCREMENT PRIMARY KEY,
-  usuario_id INT,              -- se tiver login, liga o remédio ao usuário
+  usuario_id INT,
   nome VARCHAR(100) NOT NULL,
   quantidade VARCHAR(50),
-  horarios TEXT,               -- pode salvar como texto tipo "08:00, 12:00, 18:00"
-  imagem_url VARCHAR(255),     -- link da imagem (caso tu envie pro servidor)
+  horarios TEXT,
   criado_em TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 

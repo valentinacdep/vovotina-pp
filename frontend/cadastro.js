@@ -19,6 +19,7 @@ form.addEventListener('submit', async (e) => {
   const result = await response.json();
 
   if (result.success) {
+    localStorage.setItem("userId", result.id)
     window.location.href = "paginaPrincipal.html";
   } else {
     alert("Não foi possível realizar seu cadastro, tente novamente.");
